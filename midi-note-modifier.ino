@@ -16,7 +16,6 @@ void setup() {
 void loop() {
   loopEncoders();
   loopMidi();
-  loopRendering();
 }
 
 void debug(String msg) {

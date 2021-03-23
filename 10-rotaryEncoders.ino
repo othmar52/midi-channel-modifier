@@ -1,30 +1,45 @@
 
+
+// thanks to https://github.com/cosmikwolf/Bounce2mcp
 #include <Bounce2mcp.h>
+
+// thanks to https://github.com/maxgerhardt/rotary-encoder-over-mcp23017
 #include "lib/RotaryEncOverMCP.h"
 
+// in this setup 2 rotary/push encoders are used
 #define NUM_BUTTONS 2
 
 /*
-      7   6   5   4   3   2   1   0          5V  GND GND GND
-      |   |   |   |   |   |   |   |   |   |   |   |   |   |
-    ---------------------------------------------------------
-    |                                                       |
-    Ↄ                       MCP23017                        |
-    |                                                       |
-    ---------------------------------------------------------
-      |   |   |   |   |   |   |   |   |   |   |   |   |   |
-      8   9  10  11  12  13  14  15  5V  GND      A5  A4
+                              MCP23017
+                            _____ _____
+                           |     U     |
+                          -| 8       7 |- -> to Encoder #1 DT
+                          -| 9       6 |- -> to Encoder #1 CLK
+                          -| 10      5 |- -> to Encoder #1 SW
+                          -| 11      4 |- -> to Encoder #2 DT
+                          -| 12      3 |- -> to Encoder #2 CLK
+                          -| 13      2 |- -> to Encoder #2 SW
+                          -| 14      1 |-
+                          -| 15      0 |-
+     to Arduino UNO 5V <- -| Vdd  INTA |-
+    to Arduino UNO GND <- -| Vss  INTB |-
+                          -| NC    RST |- -> to Arduino UNO 5V
+to Arduino UNO A5(SCL) <- -| SCL    A2 |- -> to Arduino UNO GND
+to Arduino UNO A4(SDA) <- -| SDA    A1 |- -> to Arduino UNO GND
+                          -| NC     A0 |- -> to Arduino UNO GND
+                           |___________|
+
 */
 
-// pin numbers of MCP23017 for all 2 encoders
-#define MCP_PIN_E1_SW 10
-#define MCP_PIN_E2_SW 8
-
+// pin numbers of MCP23017 for encoders (you can use any of the MCP23017 [0-15] pins for encoders DT, CLK and SW)
 #define MCP_PIN_E1_DT 7
-#define MCP_PIN_E2_DT 5
+#define MCP_PIN_E2_DT 4
 
 #define MCP_PIN_E1_CLK 6
-#define MCP_PIN_E2_CLK 4
+#define MCP_PIN_E2_CLK 3
+
+#define MCP_PIN_E1_SW 5
+#define MCP_PIN_E2_SW 2
 
 // Pins, used by buttons
 const uint8_t BUTTON_PINS[NUM_BUTTONS] = {
@@ -32,10 +47,10 @@ const uint8_t BUTTON_PINS[NUM_BUTTONS] = {
   MCP_PIN_E2_SW
 };
 
-// Flags to distinguish click from turn
+// Flags to distinguish click from turn (length = NUM_BUTTONS)
 bool BUTTON_ROTATION[NUM_BUTTONS] = {false, false};
 
-// Helper to track push duration for each encoder
+// Helper to track push duration for each encoder (length = NUM_BUTTONS)
 unsigned long BUTTON_LASTDOWN[NUM_BUTTONS] = {0, 0};
 
 // Button debounce wrappers
@@ -52,7 +67,7 @@ void RotaryEncoderChanged(bool clockwise, int id) {
 
 }
 
-RotaryEncOverMCP rotaryEncoders[] = {
+RotaryEncOverMCP rotaryEncoders[] = { // length = NUM_BUTTONS
   RotaryEncOverMCP(&mcp1, MCP_PIN_E1_DT, MCP_PIN_E1_CLK, &RotaryEncoderChanged, 0),
   RotaryEncOverMCP(&mcp1, MCP_PIN_E2_DT, MCP_PIN_E2_CLK, &RotaryEncoderChanged, 1)
 };

@@ -1,17 +1,37 @@
-// IMPORTANT: Adafruit_TFTLCD LIBRARY MUST BE SPECIFICALLY
-// CONFIGURED FOR EITHER THE TFT SHIELD OR THE BREAKOUT BOARD.
-// SEE RELEVANT COMMENTS IN Adafruit_TFTLCD.h FOR SETUP.
 
-// Modified for SPFD5408 Library by Joao Lopes
-// Version 0.9.2 - Rotation for Mega and screen initial
 
-// *** SPFD5408 change -- Begin
+/*
+   AZDelivery 2.4TFT LCD Touch Display Parent
+   https://www.amazon.de/dp/B086W6D9Z2
+                        ________________________
+                       |J3                    J2|
+                       |_                      _|
+                       |•|                    |•|
+to Arduino UNO RESET <-|•|LCD_RST             |•|
+   to Arduino UNO A3 <-|•|LCD_CS        LCD_02|•|-> to Arduino UNO D2
+   to Arduino UNO A2 <-|•|LCD_RS        LCD_03|•|-> to Arduino UNO D3
+   to Arduino UNO A1 <-|•|LCD_WR        LCD_04|•|-> to Arduino UNO D4
+   to Arduino UNO A0 <-|•|LCD_RD        LCD_05|•|-> to Arduino UNO D5
+                       |¯               LCD_06|•|-> to Arduino UNO D6
+                       |_               LCD_07|•|-> to Arduino UNO D7
+                       |•|                     ¯|
+  to Arduino UNO GND <-|•|GND                  _|
+                       |•|              LCD_D0|•|-> to Arduino UNO D8
+   to Arduino UNO 5V <-|•|5V            LCD_01|•|-> to Arduino UNO D9
+                       |•|3V3            SD_SS|•|
+                       |•|               SD_DI|•|
+                       |¯                SD_D0|•|
+                       |J4              SD_SCK|•|
+                       |                       ¯|
+                       |         PINS of      J1|
+                       |       AZ-Delivery      |
+                       |       2.4TFT LCD       |
+                       |________________________|
+*/
+       
 #include <SPFD5408_Adafruit_GFX.h>    // Core graphics library
 #include <SPFD5408_Adafruit_TFTLCD.h> // Hardware-specific library
 
-//#include <SPFD5408_TouchScreen.h>
-
-// *** SPFD5408 change -- End
 
 // The control pins for the LCD can be assigned to any digital or
 // analog pins...but we'll use the analog pins as this allows us to
@@ -21,24 +41,12 @@
 #define LCD_WR A1 // LCD Write goes to Analog 1
 #define LCD_RD A0 // LCD Read goes to Analog 0
 
-#define LCD_RESET PCINT14 // Can alternately just connect to Arduino's reset pin
+#define LCD_RESET PCINT14 // Arduino UNO's reset pin
 
-// When using the BREAKOUT BOARD only, use these 8 data lines to the LCD:
-// For the Arduino Uno, Duemilanove, Diecimila, etc.:
-//   D0 connects to digital pin 8  (Notice these are
-//   D1 connects to digital pin 9   NOT in order!)
-//   D2 connects to digital pin 2
-//   D3 connects to digital pin 3
-//   D4 connects to digital pin 4
-//   D5 connects to digital pin 5
-//   D6 connects to digital pin 6
-//   D7 connects to digital pin 7
-// For the Arduino Mega, use digital pins 22 through 29
-// (on the 2-row header at the end of the board).
 
 // Assign human-readable names to some common 16-bit color values:
 // @see https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
-#define  BLACK   0x0000
+#define BLACK   0x0000
 #define BLUE    0x001F
 #define RED     0xF800
 #define GREEN   0x2FE0
@@ -47,9 +55,9 @@
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 #define ORANGE  0xF562
-#define BROWN 0x82A2
-#define PINK 0xF81B
-#define GRAY 0x94B2
+#define BROWN   0x82A2
+#define PINK    0xF81B
+#define GRAY    0x94B2
 #define DARKEST_GRAY 0x2946
 
 
@@ -60,13 +68,10 @@ uint16_t lcdWidth = 0;
 uint16_t lcdHeight = 0;
 
 void setupLcd(void) {
-  
   Serial.begin(9600);
- 
-
   tft.reset();
   tft.begin(0x9341); // SDFP5408
-  tft.setRotation(1); // landscape
+  tft.setRotation(3); // landscape upside down
   lcdWidth = tft.width() - 1;
   lcdHeight = tft.height() - 1;
   tft.fillScreen(BLACK);

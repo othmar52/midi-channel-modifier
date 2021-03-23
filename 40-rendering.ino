@@ -26,11 +26,7 @@ void drawReboot() {
   tft.setCursor(0, 100);
   tft.setTextSize(3);
   tft.setTextColor(WHITE);
-  tft.println("   REBOOT");
-}
-
-void loopRendering() {
-
+  tft.println("     REBOOT");
 }
 
 void drawModeLabel() {
@@ -48,7 +44,6 @@ void drawModeLabel() {
 
 
 void drawModifierItem(struct findName item) {
-  //tft.fillRect(item.x, 0, lcdWidth/2, lcdHeight, DARKEST_GRAY);
   drawMidiChannel(item);
   drawOctave(item);
   drawTranspose(item);

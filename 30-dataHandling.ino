@@ -29,6 +29,7 @@ struct channelItem {
   uint16_t txtColor;
 };
 
+// TODO find a name for this struct...
 struct findName {
   channelItem item;
   int8_t octave;
@@ -47,7 +48,7 @@ struct channelItem getItemByChannel(uint8_t midiCh) {
     case 2: item.label =  "JD-Xi  D2"; item.midiCh = 2;  item.color = ORANGE; break;
     case 3: item.label =  "JD-Xi ana"; item.midiCh = 3;  item.color = BLUE;   break;
     case 4: item.label =  "GEM rp-x";  item.midiCh = 4;  item.color = GRAY;   break;
-    case 5: item.label =  " System1 "; item.midiCh = 5;  item.color = GREEN;  item.txtColor = BLACK; break;
+    case 5: item.label =  " System1";  item.midiCh = 5;  item.color = GREEN;  item.txtColor = BLACK; break;
     case 6: item.label =  "MicroKORG"; item.midiCh = 6;  item.color = 0x35B7; break;
     case 7: item.label =  "  VIRUS  "; item.midiCh = 7;  item.color = RED;    break;
     case 8: item.label =  "   TB3";    item.midiCh = 8;  item.color = GREEN;  item.txtColor = BLACK; break;
@@ -63,7 +64,6 @@ struct channelItem getItemByChannel(uint8_t midiCh) {
   return item;
 }
 
-
 findName modifier1;
 findName modifier2;
 
@@ -74,11 +74,6 @@ void setupDataHandling() {
   modifier2.item = getItemByChannel(0);
   modifier2.x = lcdWidth/2;
 }
-
-bool modifier2visible() {
-  return modifier2.item.midiCh != 0;
-}
-
 
 
 void handleEncoderChange(uint8_t eIdx, bool doIncrement) {
@@ -92,15 +87,14 @@ void handleEncoderChange(uint8_t eIdx, bool doIncrement) {
 }
 
 // TODO consider to have a dynamic split point!?
-void handleEncoderPush(uint8_t eIdx, int holdTime) { 
-  //Serial.println("push " + String(holdTime));
-  // short press: control different property
+void handleEncoderPush(uint8_t eIdx, int holdTime) {
   if(holdTime < 800) {
+    // short press: control different property
     loopEditPropertyIndex(eIdx);
     return;
   }
-  // very long press: reboot
   if(holdTime > 4000) {
+    // very long press: reboot
     drawReboot();
     delay(1000);
     reboot();
