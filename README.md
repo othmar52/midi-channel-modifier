@@ -1,14 +1,17 @@
 # midi-channel-modifier
 Arduino based MIDI channel modifier with LCD display and rotary encoders
 
+![arduino midi channel modifier](media/arduino-channel-modifier-002.JPG "arduino midi channel modifier")  
+
 
 ## why?
-I use a `Doepfer LMK3+` MIDI keyboard which has great features but unfortunately changing MIDI channels is a pain in the a**. The original display and potentiometer are not comfortable to read/use in case you often have to change MIDI channel(s).  
+I use a `Doepfer LMK3` (88 keys) MIDI keyboard which has great features but unfortunately changing MIDI channels is a pain in the a**. The original display and potentiometer are not comfortable to read/use in case you often have to change MIDI channel(s).  
 
-So i decided to create a DIN-MIDI-IN/DIN-MIDI-OUT Arduino with 2 rotary+push encoders and an easy to read display.  
+So i decided to create a MIDI-IN/MIDI-OUT Arduino (DIN-MIDI and/or USB-MIDI) with 2 rotary+push encoders and an easy to read display.  
 
 Further the layer/split features of the `Edirol PCR-800` keyboard inspired me to implement an easy to use layer/split functionality as well.  
 
+![arduino midi channel modifier](media/arduino-channel-modifier-001.JPG "arduino midi channel modifier")  
 
 ## wiring
 ### AZDelivery 2.4TFT LCD Touch Display
@@ -60,3 +63,41 @@ to Arduino UNO A4(SDA) <- -| SDA    A1 |- -> to Arduino UNO GND
                           -| NC     A0 |- -> to Arduino UNO GND
                            |___________|
 ```
+
+![arduino midi channel modifier](media/arduino-channel-modifier-003.JPG "arduino midi channel modifier")  
+
+
+## Display
+After powering the device is in bypass mode. All incoming MIDI events will be sent through.  
+![arduino midi channel modifier](media/arduino-channel-modifier-004.JPG "arduino midi channel modifier")  
+
+As soon as the left encoder is rotated, the display shows 3 numbers:  
+ - Midi channel to transform to
+ - Octave shift
+ - semitone transpose
+
+All incoming midi events will be transformed to the displayed midi channel  
+![arduino midi channel modifier](media/arduino-channel-modifier-005.JPG "arduino midi channel modifier")  
+
+By pushing the encoder the rotation action loops through  
+ - Edit midi channel
+ - Edit octave shift
+ - edit semitone transpose
+
+
+![arduino midi channel modifier](media/arduino-channel-modifier-006.JPG "arduino midi channel modifier")  
+
+
+As soon as the right encoder is rotated, a 2nd transform section shows up on the display. There are 2 different modes:  
+
+**SPLIT-Mode:** the lower and upper half of the keyboard sends to different midi channels  
+**LAYER-Mode:** by pressing an key of your keyboard, the note events gets doubled and sent to 2 different midi channels.  
+
+Of course the octave shift and semitone transpose settings gets applied in all 3 modes (single, dual-split, dual-layer)  
+
+![arduino midi channel modifier](media/arduino-channel-modifier-007.JPG "arduino midi channel modifier")  
+
+To disable the 2nd transformation (right part of the display) simply rotate the right encoder anti clockwise to channel 0.  
+
+To go back into bypass-mode simply rotate the left encoder anti clockwise to channel 0.  
+
