@@ -101,3 +101,7 @@ To disable the 2nd transformation (right part of the display) simply rotate the 
 
 To go back into bypass-mode simply rotate the left encoder anti clockwise to channel 0.  
 
+By pressing one of the encoders **for one second** you can toggle between layer- and split-mode.  
+
+By pressing one of the encoders **for 5 seconds** the device will reboot.  
+
